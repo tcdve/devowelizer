@@ -186,7 +186,7 @@ Tidying up ...    @ Sun May 19 19:34:40 EEST 2019 (1558283680802)
 ```
 And report can be access by loading into any browser the **index.html** file, located in folder **reportFolder**
 
-##NOTES
+## NOTES
 ### Assumptions:
 Since the case with `y` has not been clarified, the test for it follows the current behavior, so it passes successfully.
 Since the case with `capital` vowels has not been clarified, the tests follows the current behavior, so it passes successfully
