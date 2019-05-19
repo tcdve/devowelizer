@@ -1,0 +1,10 @@
+Vowels with "y" included,6,aeuioy,y,
+Only vowels with small letters,5,aeuio,,
+Capital vowels,5,AEUIO,AEUIO,
+Only non-vowels,21,bcdfghjklmnpqrstvwxyz,bcdfghjklmnpqrstvwxyz
+The whole alphabet lower case,26,abcdefghijklmnopqrstuvwxyz,bcdfghjklmnpqrstvwxyz
+The whole alphabet capital letters,26,ABCDEFGHIJKLMNOPQRSTUVWXYZ,ABCDEFGHIJKLMNOPQRSTUVWXYZ
+Empty string,0,,Send GET to /:input
+Only numbers,10,01234567890,01234567890
+LongString,512,definedInTheScript,
+UltraLong String,8075,definedInTheScript,

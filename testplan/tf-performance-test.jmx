@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.1.1 r1855137">
+  <hashTree>
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Performance Tests" enabled="true">
+      <stringProp name="TestPlan.comments"></stringProp>
+      <boolProp name="TestPlan.functional_mode">false</boolProp>
+      <boolProp name="TestPlan.tearDown_on_shutdown">true</boolProp>
+      <boolProp name="TestPlan.serialize_threadgroups">true</boolProp>
+      <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+        <collectionProp name="Arguments.arguments"/>
+      </elementProp>
+      <stringProp name="TestPlan.user_define_classpath"></stringProp>
+    </TestPlan>
+    <hashTree>
+      <TestFragmentController guiclass="TestFragmentControllerGui" testclass="TestFragmentController" testname="Performance Tests" enabled="true"/>
+      <hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Performance test with stringSize ${performanceSize}" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.method">GET</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="Defining the string length" enabled="true">
+            <stringProp name="scriptLanguage">groovy</stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="script">import org.apache.commons.lang3.RandomStringUtils
+
+//Getting performanceLengthString
+Integer performanceLengthString = Integer.valueOf(vars.get(&quot;performanceLengthString&quot;))
+
+if (performanceLengthString == 1)
+{ 
+	//Creating 5 random strings with different length
+	String pathString1 = RandomStringUtils.randomAlphanumeric(10)
+    	String pathString2 = RandomStringUtils.randomAlphanumeric(50)
+    	String pathString3 = RandomStringUtils.randomAlphanumeric(100)
+    	String pathString4 = RandomStringUtils.randomAlphanumeric(500)
+    	String pathString5 = RandomStringUtils.randomAlphanumeric(1000)
+
+	//Getting random element from the 5 generated strings
+ 	def paths = [pathString1, pathString2,pathString3,pathString4,pathString5]
+ 	Collections.shuffle(paths)
+ 	vars.put(&quot;path&quot;, String.valueOf(paths[0]))
+	vars.put(&quot;performanceSize&quot;, String.valueOf(paths[0].size()))
+}
+else 
+	{
+	//Creating random string with the desired length 
+	String pathString6 = RandomStringUtils.randomAlphanumeric(performanceLengthString)
+	vars.put(&quot;path&quot;, String.valueOf(pathString6))
+	vars.put(&quot;performanceSize&quot;, String.valueOf(pathString6.size()))
+	}
+</stringProp>
+          </JSR223PreProcessor>
+          <hashTree/>
+        </hashTree>
+      </hashTree>
+    </hashTree>
+  </hashTree>
+</jmeterTestPlan>

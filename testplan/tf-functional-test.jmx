@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.1.1 r1855137">
+  <hashTree>
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Functional API testing" enabled="true">
+      <stringProp name="TestPlan.comments"></stringProp>
+      <boolProp name="TestPlan.functional_mode">false</boolProp>
+      <boolProp name="TestPlan.tearDown_on_shutdown">true</boolProp>
+      <boolProp name="TestPlan.serialize_threadgroups">true</boolProp>
+      <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+        <collectionProp name="Arguments.arguments"/>
+      </elementProp>
+      <stringProp name="TestPlan.user_define_classpath"></stringProp>
+    </TestPlan>
+    <hashTree>
+      <TestFragmentController guiclass="TestFragmentControllerGui" testclass="TestFragmentController" testname="Functional API testing" enabled="true"/>
+      <hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Test with ${testName} and stringSize ${size}" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain"></stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.method">GET</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="Generate large strings" enabled="true">
+            <stringProp name="cacheKey">true</stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="script">import org.apache.commons.lang3.RandomStringUtils
+
+//Getting stringSize
+Integer stringSize = Integer.valueOf(vars.get(&quot;size&quot;))
+
+if (stringSize == 512)
+{ 
+	String longString = &quot;koqmlschuhlxzvcqqfpaspxwlzirknlnjmjbovickvknsftgjutpdxpvwvygvjkppxzqamouvqfijcphpeapuaojuwlujnbzhdmjbqhrbdrqzatxieicwchcwptejxuuqjkzsekrbyikbqzirwlfnbdoxwbccanfwtwilsdxfszfeymeoepumyylxqdorysscyvnnstuiqyvvpnkybykguwyljqobmkgaiamzdpyhsibhbkuudetziqhjnjxwafietgzicyuynujyidlxohxxvdrmcpgymoyexqwwrlpzaybxkudwlddvnykzwzlmitzrqbyhwyemwwdqptenpswxnbkcalqwypnxpvxzqztqouolkelwdcfkmehdkmaxiuhxsrpjqkcgidmxikozkiqthwqngymcrnolxothvnlkvyjguummugymwoaiqnnkhdahqumwityozrpnyboecygysoyazdpxupkubffidwdiisvrquvydoajiergxshnjed&quot;
+
+	String expectedResult =&quot;kqmlschhlxzvcqqfpspxwlzrknlnjmjbvckvknsftgjtpdxpvwvygvjkppxzqmvqfjcphppjwljnbzhdmjbqhrbdrqztxcwchcwptjxqjkzskrbykbqzrwlfnbdxwbccnfwtwlsdxfszfympmyylxqdrysscyvnnstqyvvpnkybykgwyljqbmkgmzdpyhsbhbkdtzqhjnjxwftgzcyynjydlxhxxvdrmcpgymyxqwwrlpzybxkdwlddvnykzwzlmtzrqbyhwymwwdqptnpswxnbkclqwypnxpvxzqztqlklwdcfkmhdkmxhxsrpjqkcgdmxkzkqthwqngymcrnlxthvnlkvyjgmmgymwqnnkhdhqmwtyzrpnybcygysyzdpxpkbffdwdsvrqvydjrgxshnjd&quot;
+
+ 	vars.put(&quot;path&quot;, String.valueOf(longString))
+	vars.put(&quot;expectedResult&quot;, String.valueOf(expectedResult))
+	}
+
+if (stringSize == 8075)
+//overriding string the string with random string of 250 length
+{ 
+	int randomStringLength = 8075
+	String charset = ((&apos;a&apos;..&apos;z&apos;) + (&apos;A&apos;..&apos;Z&apos;) + (&apos;0&apos;..&apos;9&apos;)).join()
+	String randomString = RandomStringUtils.random(randomStringLength, charset.toCharArray())
+ 	vars.put(&quot;path&quot;, String.valueOf(randomString))
+ 	
+	vars.put(&quot;stringSize&quot;, String.valueOf(randomStringLength))
+	}
+</stringProp>
+            <stringProp name="scriptLanguage">groovy</stringProp>
+          </JSR223PreProcessor>
+          <hashTree/>
+          <BeanShellAssertion guiclass="BeanShellAssertionGui" testclass="BeanShellAssertion" testname="BeanShell Assertion" enabled="true">
+            <stringProp name="BeanShellAssertion.query">import org.apache.jmeter.samplers.SampleResult;
+
+if (new String(ResponseData).equals(&quot;Internal Server Error&quot;)) {
+    SampleResult result = ctx.getCurrentSampler().sample(null);
+    if (result.getResponseDataAsString().equals(&quot;Internal Server Error&quot;)) {
+        Failure = true;
+    } else {
+        SampleResult.setSuccessful(true);
+    }
+
+}
+//exporting the number of the testcases
+${__setProperty(numberOfTest,${numberOfTest})}</stringProp>
+            <stringProp name="BeanShellAssertion.filename"></stringProp>
+            <stringProp name="BeanShellAssertion.parameters"></stringProp>
+            <boolProp name="BeanShellAssertion.resetInterpreter">false</boolProp>
+          </BeanShellAssertion>
+          <hashTree/>
+        </hashTree>
+      </hashTree>
+    </hashTree>
+  </hashTree>
+</jmeterTestPlan>
